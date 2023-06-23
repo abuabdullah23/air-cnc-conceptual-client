@@ -4,6 +4,7 @@ import SocialLogin from '../../../components/SocialLogin/SocialLogin';
 import BackToHome from '../../../components/BackToHome/BackToHome';
 import useAuth from '../../../hooks/useAuth';
 import { TbFidgetSpinner } from 'react-icons/tb';
+import { toast } from 'react-hot-toast';
 
 const SignUp = () => {
     const { user, loading, setLoading, createUser, updateUserProfile } = useAuth();
@@ -18,8 +19,37 @@ const SignUp = () => {
         const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
-    }
 
+        // image Upload
+        const image = event.target.image.files[0];
+        const formData = new FormData();
+        formData.append('image', image);
+        const url = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_ImgBB_KEY}`
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(imgData => {
+                const imgUrl = imgData.data.display_url;
+                createUser(email, password)
+                    .then(result => {
+                        updateUserProfile(name, imgUrl)
+                            .then(result => {
+                                navigate(from, { replace: true })
+                                toast.success('Successfully Signed Up!')
+                            })
+                            .catch(error => {
+                                toast.error(error.message)
+                                setLoading(false)
+                            })
+                    })
+                    .catch(error => {
+                        toast.error(error.message)
+                        setLoading(false)
+                    })
+            })
+    }
 
     return (
         <div className='md:flex gap-10 justify-center items-center min-h-screen'>
