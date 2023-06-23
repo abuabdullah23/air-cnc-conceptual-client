@@ -7,13 +7,11 @@ const Avatar = () => {
     const { user } = useAuth();
     return (
         <img
-        className='rounded-full'
+            className='rounded-full object-cover object-center w-8 h-8'
             src={user && user.photoURL ? user.photoURL : avatarLogo}
-            alt="profile" 
-            width='30'
-            height='30'
-            title={user&& user?.displayName ? user?.displayName : user?.email}
-            />
+            alt="profile"
+            title={user && user?.email ? user?.email : user?.displayName}
+        />
     );
 };
 
