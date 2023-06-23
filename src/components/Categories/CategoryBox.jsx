@@ -1,16 +1,35 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import queryString from 'query-string';
 
 const CategoryBox = ({ label, icon: Icon }) => {
+    const [params, setParams] = useSearchParams();
+    const navigate = useNavigate();
+
+    const handleShowCategory = () => {
+        let currentQuery = {}
+        if (params) {
+            currentQuery = queryString.parse(params.toString());
+        }
+        const updatedQuery = {
+            ...currentQuery, category: label,
+        }
+        const url = queryString.stringifyUrl(
+            {
+                url: '/',
+                query: updatedQuery,
+            },
+            { skipNull: true }
+        )
+        navigate(url)
+    }
     return (
-        <Link>
-            <div className='flex flex-col gap-2 items-center justify-center border-b-2 border-transparent hover:text-neutral-800 text-neutral-500'>
-                <Icon size={26} />
-                <div>
-                    {label}
-                </div>
+        <div onClick={handleShowCategory} className='flex flex-col gap-2 items-center justify-center border-b-2 border-transparent hover:text-neutral-800 text-neutral-500 cursor-pointer'>
+            <Icon size={26} />
+            <div>
+                {label}
             </div>
-        </Link>
+        </div>
     );
 };
 
