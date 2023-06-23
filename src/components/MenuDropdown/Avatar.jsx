@@ -12,6 +12,7 @@ const Avatar = () => {
             alt="profile" 
             width='30'
             height='30'
+            title={user&& user?.displayName ? user?.displayName : user?.email}
             />
     );
 };
