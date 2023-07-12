@@ -22,6 +22,7 @@ const SignUp = () => {
 
         // image Upload
         const image = event.target.image.files[0];
+        console.log(image)
         const formData = new FormData();
         formData.append('image', image);
         const url = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_ImgBB_KEY}`
