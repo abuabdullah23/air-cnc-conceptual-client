@@ -11,7 +11,7 @@ const Rooms = () => {
     const [params, setParams] = useSearchParams();
     const category = params.get('category');
 
-    console.log(rooms)
+    // console.log(rooms)
     useEffect(() => {
         setLoading(true)
         fetch('rooms.json')
