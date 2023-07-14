@@ -5,6 +5,7 @@ import BackToHome from '../../../components/BackToHome/BackToHome';
 import useAuth from '../../../hooks/useAuth';
 import { TbFidgetSpinner } from 'react-icons/tb';
 import { toast } from 'react-hot-toast';
+import { saveUser } from '../../../api/auth';
 
 const SignUp = () => {
     const { user, loading, setLoading, createUser, updateUserProfile } = useAuth();
@@ -35,6 +36,8 @@ const SignUp = () => {
                 const imgUrl = imgData.data.display_url;
                 createUser(email, password)
                     .then(result => {
+                        // save user in mongoDB
+                        saveUser(result.user)
                         updateUserProfile(name, imgUrl)
                             .then(() => {
                                 navigate(from, { replace: true })

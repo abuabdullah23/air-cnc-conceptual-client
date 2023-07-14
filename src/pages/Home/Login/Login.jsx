@@ -6,6 +6,7 @@ import useAuth from '../../../hooks/useAuth';
 import { TbFidgetSpinner } from 'react-icons/tb';
 import { toast } from 'react-hot-toast';
 import { useRef } from 'react';
+import { saveUser } from '../../../api/auth';
 
 const Login = () => {
     const { signIn, loading, setLoading, resetPassword } = useAuth();
@@ -23,7 +24,9 @@ const Login = () => {
         signIn(email, password)
             .then(result => {
                 console.log(result);
-                navigate(from, {replace: true})
+                // save user in mongoDB
+                saveUser(result.user)
+                navigate(from, { replace: true })
                 toast.success('Successfully Logged In!')
             })
             .catch(error => {

@@ -3,6 +3,7 @@ import { FcGoogle } from 'react-icons/fc';
 import useAuth from '../../hooks/useAuth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { saveUser } from '../../api/auth';
 
 const SocialLogin = () => {
     const { signInWithGoogle, setLoading } = useAuth();
@@ -15,6 +16,8 @@ const SocialLogin = () => {
         signInWithGoogle()
             .then(result => {
                 console.log(result)
+                // save user in mongoDB
+                saveUser(result.user)
                 navigate(from, { replace: true })
                 toast.success('Successfully Logged In!')
             })
