@@ -14,7 +14,7 @@ const Rooms = () => {
     // console.log(rooms)
     useEffect(() => {
         setLoading(true)
-        fetch('rooms.json')
+        fetch(`${import.meta.env.VITE_API_URL}/rooms`)
             .then(res => res.json())
             .then(data => {
                 if (category) {

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AddRoomForm from '../../components/Forms/AddRoomForm';
 import { imageUpload } from '../../api/utils';
 import useAuth from '../../hooks/useAuth';
+import { addRoom } from '../../api/rooms';
 
 const AddRoom = () => {
     const { user } = useAuth();
@@ -54,7 +55,9 @@ const AddRoom = () => {
                     bathrooms,
                     description
                 }
-                console.log(roomData)
+                // console.log(roomData)
+                // save room data in server
+                addRoom(roomData);
                 setLoading(false)
             })
             .catch(error => {

@@ -29,17 +29,19 @@ const SignUp = () => {
                 const imgUrl = data.data.display_url;
                 createUser(email, password)
                     .then(result => {
-                        // save user in mongoDB
-                        saveUser(result.user)
                         updateUserProfile(name, imgUrl)
                             .then(() => {
                                 navigate(from, { replace: true })
                                 toast.success('Successfully Signed Up!')
+                                
+                                // save user in mongoDB
+                                saveUser(result.user)
                             })
                             .catch(error => {
                                 toast.error(error.message)
                                 setLoading(false)
                             })
+
                     })
                     .catch(error => {
                         toast.error(error.message)
