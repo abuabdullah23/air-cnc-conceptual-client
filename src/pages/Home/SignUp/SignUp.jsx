@@ -6,6 +6,7 @@ import useAuth from '../../../hooks/useAuth';
 import { TbFidgetSpinner } from 'react-icons/tb';
 import { toast } from 'react-hot-toast';
 import { saveUser } from '../../../api/auth';
+import { imageUpload } from '../../../api/utils';
 
 const SignUp = () => {
     const { user, loading, setLoading, createUser, updateUserProfile } = useAuth();
@@ -23,17 +24,9 @@ const SignUp = () => {
 
         // image Upload
         const image = event.target.image.files[0];
-        console.log(image)
-        const formData = new FormData();
-        formData.append('image', image);
-        const url = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_ImgBB_KEY}`
-        fetch(url, {
-            method: 'POST',
-            body: formData
-        })
-            .then(res => res.json())
-            .then(imgData => {
-                const imgUrl = imgData.data.display_url;
+        imageUpload(image) // call from utils.js for no repeat same code
+            .then(data => {
+                const imgUrl = data.data.display_url;
                 createUser(email, password)
                     .then(result => {
                         // save user in mongoDB
