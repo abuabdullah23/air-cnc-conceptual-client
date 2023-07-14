@@ -3,6 +3,7 @@ import Card from './Card';
 import Loader from '../Loader/Loader';
 import { useSearchParams } from 'react-router-dom';
 import Heading from '../Heading/Heading';
+import { getAllRooms } from '../../api/rooms';
 
 const Rooms = () => {
     const [rooms, setRooms] = useState([]);
@@ -14,8 +15,7 @@ const Rooms = () => {
     // console.log(rooms)
     useEffect(() => {
         setLoading(true)
-        fetch(`${import.meta.env.VITE_API_URL}/rooms`)
-            .then(res => res.json())
+        getAllRooms()
             .then(data => {
                 if (category) {
                     const filtered = data.filter(room => room.category === category)
