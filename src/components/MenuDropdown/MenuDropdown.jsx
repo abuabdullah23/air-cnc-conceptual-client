@@ -35,7 +35,7 @@ const MenuDropdown = () => {
           className='hidden md:block text-sm font-semibold py-3 px-6 transition'>
           {!role && <button
             onClick={() => setModal(true)}
-            disabled={!role}
+            disabled={role}
             className='hover:bg-neutral-100 py-2 px-4 rounded-full'
           >
             AirCNC your home</button>}
@@ -71,7 +71,7 @@ const MenuDropdown = () => {
                 <div
                   onClick={() => {
                     setRole(null),
-                      logOut
+                      logOut()
                   }}
                   className='px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer'
                 >

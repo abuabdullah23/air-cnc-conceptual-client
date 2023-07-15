@@ -48,12 +48,12 @@ const AddRoom = () => {
                     },
                     image: data.data.display_url,
                     category,
-                    price,
+                    price: parseFloat(price),
                     to,
                     from,
-                    total_guest,
-                    bedrooms,
-                    bathrooms,
+                    total_guest: parseInt(total_guest),
+                    bedrooms: parseInt(bedrooms),
+                    bathrooms: parseInt(bathrooms),
                     description
                 }
                 // console.log(roomData)
