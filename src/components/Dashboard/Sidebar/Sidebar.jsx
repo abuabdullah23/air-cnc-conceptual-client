@@ -4,13 +4,14 @@ import useAuth from '../../../hooks/useAuth';
 import { GrLogout } from 'react-icons/gr'
 import { FcHome, FcSettings } from 'react-icons/fc'
 import { AiOutlineBars } from 'react-icons/ai'
-import { BsFillHouseAddFill } from 'react-icons/bs';
 import Logo from '../../../pages/Shared/Navbar/Logo';
+import GuestMenu from './GuestMenu';
+import HostMenu from './HostMenu';
 
 const Sidebar = () => {
     const navigate = useNavigate()
     const [toggle, setToggle] = useState(false)
-    const { user, logOut } = useAuth();
+    const { user, logOut, role } = useAuth();
 
     const [isActive, setActive] = useState('false')
     const toggleHandler = event => {
@@ -97,17 +98,9 @@ const Sidebar = () => {
                                     </span>
                                 </label>
                                 {/* Menu Links */}
-                                <NavLink
-                                    to='add-room'
-                                    className={({ isActive }) =>
-                                        `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
-                                        }`
-                                    }
-                                >
-                                    <BsFillHouseAddFill className='w-5 h-5' />
-
-                                    <span className='mx-4 font-medium'>Add Room</span>
-                                </NavLink>
+                                {
+                                    role ? <HostMenu /> : <GuestMenu />
+                                }
                             </>
                         </nav>
                     </div>

@@ -6,11 +6,12 @@ import BookingModal from '../Modal/BookingModal';
 import { formatDistance } from 'date-fns';
 import { addBooking, updateRoomStatus } from '../../api/bookings';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const RoomReservation = ({ singleRoom }) => {
     const { user, role } = useAuth();
-    const { _id, title, host, location, price } = singleRoom;
-
+    const { _id, title, host, location, price, image } = singleRoom;
+    const navigate = useNavigate();
     // for modal
     const [isOpen, setIsOpen] = useState(false);
     const closeModal = () => {
@@ -40,6 +41,7 @@ const RoomReservation = ({ singleRoom }) => {
         roomId: singleRoom._id,
         title,
         location,
+        image,
         price: totalPrice,
         from: value.startDate,
         to: value.endDate
@@ -54,6 +56,7 @@ const RoomReservation = ({ singleRoom }) => {
                     .then(data => {
                         toast.success('Booking Successful!');
                         closeModal();
+                        navigate('/dashboard/my-bookings')
                     })
                     .catch(error => {
                         toast.error(error.message);
@@ -82,7 +85,7 @@ const RoomReservation = ({ singleRoom }) => {
             <div className='p-4'>
                 <Button
                     onClick={() => setIsOpen(true)}
-                    disabled={host.email === user.email}
+                    disabled={host.email === user.email || singleRoom.booked}
                     label={'Reserve'} />
             </div>
             <hr />

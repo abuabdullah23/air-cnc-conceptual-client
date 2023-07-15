@@ -27,3 +27,26 @@ export const updateRoomStatus = async (id, status) => {
     const data = await response.json()
     return data;
 }
+
+
+// Get all bookings for a user by email
+export const getBookings = async email => {
+    const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/bookings?email=${email}`,
+    )
+    const bookings = await response.json();
+    return bookings;
+}
+
+// Delete a Booking
+export const deleteBooking = async (id) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/bookings/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'content-type': 'application/json',
+        },
+    })
+
+    const data = await response.json()
+    return data;
+}
