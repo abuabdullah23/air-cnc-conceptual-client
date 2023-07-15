@@ -4,9 +4,11 @@ import { imageUpload } from '../../api/utils';
 import useAuth from '../../hooks/useAuth';
 import { addRoom } from '../../api/rooms';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const AddRoom = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [dates, setDates] = useState({
         startDate: new Date(),
         endDate: new Date(),
@@ -34,6 +36,7 @@ const AddRoom = () => {
         const description = form.description.value;
         const image = event.target.image.files[0];
 
+        setUploadButtonText('Uploading...')
         // upload Image
         imageUpload(image)
             .then(data => {
@@ -61,11 +64,15 @@ const AddRoom = () => {
                 addRoom(roomData)
                     .then(data => {
                         // console.log(data)
-                        toast.success('Successfully Added Your Room!')
+                        setUploadButtonText('Uploaded');
+                        setLoading(false)
+                        toast.success('Successfully Added Your Room!');
+                        navigate('/dashboard/my-listings');
                     })
                     .catch(error => {
                         // console.log(error.message)
-                        toast.error(error.message)
+                        toast.error(error.message);
+                        setLoading(false)
                     })
                 setLoading(false)
             })
