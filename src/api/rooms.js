@@ -26,7 +26,7 @@ export const getHostsRooms = async email => {
     return data;
 }
 
-// get filtered room for host
+// delete filtered room for host
 export const deleteHostsRooms = async (id) => {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/rooms/${id}`, {
         method: 'DELETE',
