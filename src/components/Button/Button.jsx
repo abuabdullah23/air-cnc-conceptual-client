@@ -16,6 +16,7 @@ const Button = ({ label, onClick, disabled, outline, small, icon: Icon }) => {
           ${outline ? 'text-black' : 'text-white'}
           ${small ? 'text-sm' : 'text-md'}
           ${small ? 'py-1' : 'py-3'}
+          ${small ? 'px-1' : 'px-4'}
           ${small ? 'font-light' : 'font-semibold'}
           ${small ? 'border-[1px]' : 'border-2'}
         `}

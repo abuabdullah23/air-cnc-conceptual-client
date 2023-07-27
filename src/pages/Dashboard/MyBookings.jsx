@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import { getBookings } from '../../api/bookings';
 import TableRow from '../../components/Dashboard/TableRow';
+import EmptyContent from '../../components/EmptyContent/EmptyContent';
 
 const MyBookings = () => {
     const { user } = useAuth();
@@ -17,7 +18,7 @@ const MyBookings = () => {
     }, [user])
 
     return (
-        <div className='container mx-auto px-4 sm:px-8'>
+        <>{bookings && Array.isArray(bookings) && bookings.length > 0 ? <div className='container mx-auto px-4 sm:px-8'>
             <div className='py-8'>
                 <div className='-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto'>
                     <div className='inline-block min-w-full shadow rounded-lg overflow-hidden'>
@@ -75,7 +76,13 @@ const MyBookings = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div> : <EmptyContent
+            emptyMessage={'You have not booking any room'}
+            address={'/'}
+            label={'Browse Rooms'}
+        />}</>
+
+
     );
 };
 
