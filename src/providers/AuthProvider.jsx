@@ -12,6 +12,7 @@ import {
 } from 'firebase/auth'
 import { app } from '../firebase/firebase.config'
 import { getRole } from '../api/auth'
+import axios from 'axios'
 
 export const AuthContext = createContext(null)
 
@@ -25,8 +26,8 @@ const AuthProvider = ({ children }) => {
 
   // get user role
   useEffect(() => {
-    if(user){
-      getRole(user?.email).then(data=> setRole(data))
+    if (user) {
+      getRole(user?.email).then(data => setRole(data))
     }
   }, [user])
 
@@ -66,7 +67,18 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, currentUser => {
       setUser(currentUser)
       // console.log('current user', currentUser)
-      setLoading(false)
+      // set jwt
+      if (currentUser?.email) {
+        axios.post(`${import.meta.env.VITE_API_URL}/jwt`, { email: currentUser?.email })
+          .then(data => {
+            console.log(data.data.token)
+            localStorage.setItem('access-token', data.data.token)
+            setLoading(false)
+          })
+      } else {
+        localStorage.removeItem('access-token')
+        setLoading(false)
+      }
     })
     return () => {
       return unsubscribe()
@@ -83,7 +95,7 @@ const AuthProvider = ({ children }) => {
     resetPassword,
     logOut,
     updateUserProfile,
-    role, 
+    role,
     setRole,
   }
 
@@ -95,3 +107,20 @@ const AuthProvider = ({ children }) => {
 }
 
 export default AuthProvider;
+
+
+// old style to post jwt token and save local storage
+// if (currentUser?.email) {
+ // fetch(`${import.meta.env.VITE_API_URL}/jwt`, {
+        //   method: 'POST',
+        //   headers: {
+        //     'content-type': 'application/json'
+        //   },
+        //   body: JSON.stringify({ email: currentUser?.email })
+        // })
+        //   .then(res => res.json())
+        //   .then(data => {
+        //     console.log(data)
+        //     localStorage.setItem('access-token', data.token)
+        //   })
+// }
