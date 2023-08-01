@@ -1,24 +1,35 @@
-import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import RoomDataRow from '../../components/Dashboard/RoomDataRow';
 import EmptyContent from '../../components/EmptyContent/EmptyContent';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
 
 const MyListings = () => {
-    const { user } = useAuth();
-    const [rooms, setRooms] = useState([]);
+    const { user, loading } = useAuth();
     const [axiosSecure] = useAxiosSecure();
+    // const [rooms, setRooms] = useState([]);
 
-    const fetchBookings = () => {
-        axiosSecure.get(`/rooms/${user?.email}`)
-            .then(data => {
-                console.log(data.data)
-                setRooms(data.data)
-            })
-    }
-    useEffect(() => {
-        fetchBookings()
-    }, [user])
+    // const fetchBookings = () => {
+    //     axiosSecure.get(`/rooms/${user?.email}`)
+    //         .then(data => {
+    //             console.log(data.data)
+    //             setRooms(data.data)
+    //         })
+    // }
+    // useEffect(() => {
+    //     fetchBookings()
+    // }, [user])
+
+    const { data: rooms = [], refetch } = useQuery({
+        queryKey: ['rooms', user?.email],
+        enabled: !loading,
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/rooms/${user?.email}`);
+            console.log('res from tanStack query', res.data)
+            return res.data;
+        },
+    })
+
 
     return (
         <> {rooms && Array.isArray(rooms) && rooms.length > 0
@@ -79,7 +90,7 @@ const MyListings = () => {
                                         rooms && rooms.map(room => <RoomDataRow
                                             key={room._id}
                                             room={room}
-                                            fetchBookings={fetchBookings}
+                                            fetchBookings={refetch}
                                         />)
                                     }
                                 </tbody>
