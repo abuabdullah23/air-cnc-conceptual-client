@@ -3,10 +3,12 @@ import DeleteModal from '../Modal/DeleteModal';
 import { useState } from 'react';
 import { deleteHostsRooms } from '../../api/rooms';
 import { toast } from 'react-hot-toast';
+import UpdateRoomModal from '../Modal/UpdateRoomModal';
 
 const RoomDataRow = ({ room, fetchBookings }) => {
     // for modal
     const [isOpen, setIsOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const closeModal = () => {
         setIsOpen(false)
     }
@@ -79,8 +81,17 @@ const RoomDataRow = ({ room, fetchBookings }) => {
                         aria-hidden='true'
                         className='absolute inset-0 bg-green-200 opacity-50 rounded-full'
                     ></span>
-                    <span className='relative'>Update</span>
+                    <span
+                        onClick={() => setIsEditModalOpen(true)}
+                        className='relative'>Update</span>
                 </span>
+                <UpdateRoomModal
+                    isOpen={isEditModalOpen}
+                    setIsEditModalOpen={setIsEditModalOpen}
+                    refetch={fetchBookings}
+                    room={room}
+                    id={room?._id}
+                />
             </td>
         </tr>
     );
